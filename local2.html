@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="transactionForm">
+        <label for="transactionUserId">User ID:</label>
+        <input type="text" id="transactionUserId" name="transactionUserId" required><br><br>
+        <label for="transactionAmount">Transaction Amount:</label>
+        <input type="number" id="transactionAmount" name="transactionAmount" required><br><br>
+        <button type="submit">Add Transaction</button>
+    </form>
+<script>
+document.getElementById('transactionForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const transactionUserId = document.getElementById('transactionUserId').value;
+    const transactionAmount = parseFloat(document.getElementById('transactionAmount').value);
+
+    let users = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];
+
+    // Find user by ID
+    const user = users.find(user => user.userId === transactionUserId);
+    if (!user) {
+        alert('User ID not found.');
+        return;
+    }
+
+    // Update balance and transactions
+    user.balance += transactionAmount;
+    user.transactions.push({
+        amount: transactionAmount,
+        date: new Date().toISOString()
+    });
+
+    // Save updated data back to localStorage
+    localStorage.setItem('users', JSON.stringify(users));
+
+    alert('Transaction added successfully!');
+});
+
+
+
+
+</script>    
+</body>
+</html>
